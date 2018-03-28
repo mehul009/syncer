@@ -4,7 +4,7 @@ By this python coad you can take a backup in your hard-drive for your ubuntu
 For this you have to feed a data in 'shutil.csv' 
 Here you find two coloums 
 1) only_file  
-2)with_dir
+2) with_dir
 
 If you only want to backup filke from those folders than enter data in this column(name like folder/sub_folder  do not wright like /home/user/folder/sub_folder)
 
