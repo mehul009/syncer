@@ -11,6 +11,6 @@ If you only want to backup filke from those folders than enter data in this colu
 And if you want to backeup whole directory with subfolder and it's subfolder recursively than add thosw folders name in this line( you also add folder/sub_folder)
 
 After this 
-run this coad on a hard-drive by simply write 'python3 syncer.py' 
+run this coad on a hard-drive by simply write 'python3 syncer.py' (with administartive permission)
 
 for any help mail me on mehulsutariya09@gmail.com
