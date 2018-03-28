@@ -34,7 +34,7 @@ while k == 0:            # main loop for only_file
 
         for o in list:                               # remove all dir
             try:
-                shu.copy(copy_folder_o + o, os.getcwd())
+                shu.copy(copy_folder_o + str(o), os.getcwd())
             except IsADirectoryError:
                 list.remove(o)
 
@@ -44,7 +44,7 @@ while k == 0:            # main loop for only_file
                 j = j + 1     # if file is same than increase value
 
         if j < len(list) :        # if j in in limit than go for copy
-            shu.copy(copy_folder_o + list[j], os.getcwd())  # copy the file
+            shu.copy(copy_folder_o + str(list[j]), os.getcwd())  # copy the file
 
         os.chdir(pwd)                      # after copy going into main directory
         j = j + 1
@@ -70,7 +70,7 @@ def copy (path):
         
         for o in list1:
             try :
-                shu.copy(folder_o + o, os.getcwd())
+                shu.copy(folder_o + str(o), os.getcwd())
             except IsADirectoryError:
                 pwd2 = os.getcwd()
                 copy(path + '/' + o )
@@ -84,7 +84,7 @@ def copy (path):
                     j = j + 1     # if file is same than increase value
 
         if j < len(list1) :        # if j in in limit than go for copy
-            shu.copy(folder_o + list1[j], os.getcwd())  # copy the file
+            shu.copy(folder_o + str(list1[j]), os.getcwd())  # copy the file
         j = j + 1
         os.chdir(pwd)
     
@@ -111,7 +111,7 @@ while k == 0:            # main loop for only_file
         
         for o in list:
             try :
-                shu.copy(copy_folder_o + o, os.getcwd())
+                shu.copy(copy_folder_o + str(o), os.getcwd())
             except IsADirectoryError:
                 pwd1 = os.getcwd()
                 copy(copy_folder + '/' + o )
@@ -125,7 +125,7 @@ while k == 0:            # main loop for only_file
                     j = j + 1     # if file is same than increase value
 
         if j < len(list) :        # if j in in limit than go for copy
-            shu.copy(copy_folder_o + list[j], os.getcwd())  # copy the file
+            shu.copy(copy_folder_o + str(list[j]), os.getcwd())  # copy the file
 
         os.chdir(pwd)                      # after copy going into main directory
         j = j + 1
