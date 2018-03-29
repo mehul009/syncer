@@ -1,136 +1,137 @@
-import shutil as shu   # librery for copy
+import shutil as shu
 import pandas as pd
 import os
-  
- 
-pwd = os.getcwd()                   # find working directory(use at end loop)
-file = pd.read_csv('shutil.csv')  # read database file
+
+os.chdir('/home/mehul09/copy/')
+drive_home = os.getcwd()       # home dir of drive
+
+file = pd.read_csv('shutil.csv')   # read file shutil.csv
 
 i = 0
 k = 0
 
-while k == 0:            # main loop for only_file
+while i == 0:
     try:                 # exception if column value is more than dataframe
-        copy_folder = file.at[i, 'only_file']
+        folder = file.at[k, 'only_file']
     except KeyError:
         break
     
+    folder = file.at[k, 'only_file']         # get data from file
+    folder_path = '/home/mehul09/' + folder + '/'   # /home/mehul09 is home folder
     
-    copy_folder = file.at[i, 'only_file']         # get data from file
-    copy_folder_o = '/home/mehul09/' + copy_folder + '/'   # /home/mehul09 is home folder
-   
     try:                 # exception if column value is nan
-        list = os.listdir(copy_folder_o)       
+        list_object = os.listdir(str(folder_path))       
     except FileNotFoundError:
         break
-    list = os.listdir(copy_folder_o)       # find list of database's path
-    je = 1
-    j = 0
-    while j < je :      # second loop
-        if not os.path.exists(os.getcwd() + '/' + copy_folder):  # making directory if not present
-            os.makedirs(os.getcwd() + '/' + copy_folder)     
+    
+    list_object = os.listdir(str(folder_path))       
+    list_file = []
+     
+    for object in list_object :
+        try :              # to saprate out dir and file 
+            os.chdir(str(folder_path) + object)
+        except NotADirectoryError :
+            list_file.append(object)
             
-        os.chdir(os.getcwd() + '/' + copy_folder)    # change the directory as require
+    for file1 in list_file :
+        list_object.remove(file1)
+        
+    list_dir = list_object
+        
+        
+    if not os.path.exists(drive_home + '/' + folder):  # making directory if not present
+        os.makedirs(drive_home + '/' + folder)
+        
+    drive_folder = str(drive_home)  + '/' + folder
+    os.chdir(drive_folder)
+    
+    list_object_drive_folder = os.listdir(str(drive_folder))
+    list_file_new = []
+    
+    for file_drive in list_object_drive_folder :
+        try :
+            list_file.remove(file_drive)
+        except ValueError :
+            pass
+            
+    list_file_new = list_file
+                
+    if len(list_object_drive_folder) == 0:
+        list_file_new = list_file
 
-        for o in list:                               # remove all dir
-            try:
-                shu.copy(copy_folder_o + str(o), os.getcwd())
-            except IsADirectoryError:
-                list.remove(o)
+    
+    for new_file in list_file_new :
+        shu.copy(folder_path + new_file , drive_folder)
+        
+    
+    os.chdir(drive_home)
+    
+    k = k + 1
+                
+    
+def copy_dir (path,folder) :
+    list_object = os.listdir(str(path))       
+    list_file = []
+     
+    for object in list_object :
+        try :              # to saprate out dir and file 
+            os.chdir(str(path) +'/' + str(object))
+        except NotADirectoryError :
+            list_file.append(object)
+            
+    for file1 in list_file :
+        list_object.remove(file1)
+        
+    list_dir = list_object
+    if len(list_dir) > 0 :
+        for dir in list_dir :
+            copy_dir(str(path) + str(dir) + '/', str(folder) + '/' + str(dir) + '/')
+        
+        
+    if not os.path.exists(drive_home + '/' + folder):  # making directory if not present
+        os.makedirs(drive_home + '/' + folder)
+        
+    drive_folder = str(drive_home)  + '/' + folder
+    os.chdir(drive_folder)
+    
+    list_object_drive_folder = os.listdir(str(drive_folder))
+    list_file_new = []
+    
+    for file_drive in list_object_drive_folder :
+        try :
+            list_file.remove(file_drive)
+        except ValueError :
+            pass
+            
+    list_file_new = list_file
+                
+    if len(list_object_drive_folder) == 0:
+        list_file_new = list_file
 
-        je = len(list)
-        for f in os.listdir(os.getcwd()) :
-            if f == list[j]:
-                j = j + 1     # if file is same than increase value
-
-        if j < len(list) :        # if j in in limit than go for copy
-            shu.copy(copy_folder_o + str(list[j]), os.getcwd())  # copy the file
-
-        os.chdir(pwd)                      # after copy going into main directory
-        j = j + 1
-
-    i = i + 1
-                    
-os.chdir(pwd)   # go into main folder of disk
-
-
+    
+    for new_file in list_file_new :
+        shu.copy(path + str(new_file) , drive_folder)
+        
+        
 i = 0
 k = 0
 
-def copy (path):
-    os.chdir(pwd)
-    folder_o = '/home/mehul09/' + path + '/'
-    list1 = os.listdir(folder_o)
-    je = 1
-    j =0
-    while j < je :
-        if not os.path.exists(os.getcwd() + '/' + path):  # making directory if not present
-            os.makedirs(os.getcwd() + '/' + path)
-        os.chdir(os.getcwd() + '/' + path)
-        
-        for o in list1:
-            try :
-                shu.copy(folder_o + str(o), os.getcwd())
-            except IsADirectoryError:
-                pwd2 = os.getcwd()
-                copy(path + '/' + o )
-                list1.remove(o)
-                os.chdir(pwd2)
-        
-        je = len(list1)
-        for f in os.listdir(os.getcwd()) :
-            if j<len(list1):
-                if f == list1[j]:
-                    j = j + 1     # if file is same than increase value
-
-        if j < len(list1) :        # if j in in limit than go for copy
-            shu.copy(folder_o + str(list1[j]), os.getcwd())  # copy the file
-        j = j + 1
-        os.chdir(pwd)
-    
-while k == 0:            # main loop for only_file
+while i == 0:
     try:                 # exception if column value is more than dataframe
-        copy_folder = str(file.at[i, 'with_dir'])
+        folder = file.at[k, 'with_dir']
     except KeyError:
         break
     
-    copy_folder = str(file.at[i, 'with_dir'])         # get data from file
-    copy_folder_o = '/home/mehul09/' + copy_folder + '/'
+    folder = file.at[k, 'with_dir']         # get data from file
+    folder_path = '/home/mehul09/' + folder + '/'   # /home/mehul09 is home folder
+    
     try:                 # exception if column value is nan
-        list = os.listdir(copy_folder_o)
+        list_object = os.listdir(str(folder_path))       
     except FileNotFoundError:
         break
     
-    list = os.listdir(copy_folder_o)
-    je = 1
-    j =0
-    while j < je :
-        if not os.path.exists(os.getcwd() + '/' + copy_folder):  # making directory if not present
-            os.makedirs(os.getcwd() + '/' + copy_folder)
-        os.chdir(os.getcwd() + '/' + copy_folder)
-        
-        for o in list:
-            try :
-                shu.copy(copy_folder_o + str(o), os.getcwd())
-            except IsADirectoryError:
-                pwd1 = os.getcwd()
-                copy(copy_folder + '/' + o )
-                list.remove(o)
-                os.chdir(pwd1)
-        
-        je = len(list)
-        for f in os.listdir(os.getcwd()) :
-            if j<len(list):
-                if f == list[j]:
-                    j = j + 1     # if file is same than increase value
-
-        if j < len(list) :        # if j in in limit than go for copy
-            shu.copy(copy_folder_o + str(list[j]), os.getcwd())  # copy the file
-
-        os.chdir(pwd)                      # after copy going into main directory
-        j = j + 1
-
-    i = i + 1
-                    
-os.chdir(pwd)   # go into main folder of disk
-
+    copy_dir(folder_path,folder)
+    
+    os.chdir(drive_home)
+    
+    k = k + 1
