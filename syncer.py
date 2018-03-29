@@ -2,7 +2,7 @@ import shutil as shu
 import pandas as pd
 import os
 
-os.chdir('/home/mehul09/copy/')
+
 drive_home = os.getcwd()       # home dir of drive
 
 file = pd.read_csv('shutil.csv')   # read file shutil.csv
