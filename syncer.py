@@ -1,8 +1,8 @@
-import shutil as shu
+import shutil as shu         # librery for the copy file
 import pandas as pd
 import os
 
-
+home = '/home/mehul09/'    # must have to change
 drive_home = os.getcwd()       # home dir of drive
 
 file = pd.read_csv('shutil.csv')   # read file shutil.csv
@@ -17,14 +17,14 @@ while i == 0:
         break
     
     folder = file.at[k, 'only_file']         # get data from file
-    folder_path = '/home/mehul09/' + folder + '/'   # /home/mehul09 is home folder
+    folder_path = home + str(folder) + '/'   # /home/mehul09 is home folder
     
     try:                 # exception if column value is nan
         list_object = os.listdir(str(folder_path))       
     except FileNotFoundError:
         break
     
-    list_object = os.listdir(str(folder_path))       
+    list_object = os.listdir(str(folder_path))    # list all object on path   
     list_file = []
      
     for object in list_object :
@@ -49,7 +49,7 @@ while i == 0:
     list_file_new = []
     
     for file_drive in list_object_drive_folder :
-        try :
+        try :                                # find a new file 
             list_file.remove(file_drive)
         except ValueError :
             pass
@@ -60,8 +60,9 @@ while i == 0:
         list_file_new = list_file
 
     
-    for new_file in list_file_new :
-        shu.copy(folder_path + new_file , drive_folder)
+    for new_file in list_file_new :            # copy those new file
+        print(folder_path + new_file)
+        shu.copy(folder_path + str(new_file) , drive_folder)
         
     
     os.chdir(drive_home)
@@ -84,7 +85,7 @@ def copy_dir (path,folder) :
         
     list_dir = list_object
     if len(list_dir) > 0 :
-        for dir in list_dir :
+        for dir in list_dir :               # if folder contain folder than chek recursively 
             copy_dir(str(path) + str(dir) + '/', str(folder) + '/' + str(dir) + '/')
         
         
@@ -110,6 +111,7 @@ def copy_dir (path,folder) :
 
     
     for new_file in list_file_new :
+        print(path + str(new_file))
         shu.copy(path + str(new_file) , drive_folder)
         
         
@@ -123,7 +125,7 @@ while i == 0:
         break
     
     folder = file.at[k, 'with_dir']         # get data from file
-    folder_path = '/home/mehul09/' + folder + '/'   # /home/mehul09 is home folder
+    folder_path = home + str(folder) + '/'   # /home/mehul09 is home folder
     
     try:                 # exception if column value is nan
         list_object = os.listdir(str(folder_path))       
