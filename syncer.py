@@ -1,11 +1,17 @@
 import shutil as shu         # librery for the copy file
 import pandas as pd
 import os
+import time 
+from numpy import array
 
-home = '/home/mehul09/'    # must have to change
+t_start = time.time()
+os.chdir('/home/mehul09/copy/')     # for cheking purpose only  
 drive_home = os.getcwd()       # home dir of drive
 
 file = pd.read_csv('shutil.csv')   # read file shutil.csv
+
+total_size = []
+
 
 i = 0
 k = 0
@@ -17,7 +23,7 @@ while i == 0:
         break
     
     folder = file.at[k, 'only_file']         # get data from file
-    folder_path = home + str(folder) + '/'   # /home/mehul09 is home folder
+    folder_path = '/home/mehul09/' + str(folder) + '/'   # /home/mehul09 is home folder
     
     try:                 # exception if column value is nan
         list_object = os.listdir(str(folder_path))       
@@ -61,8 +67,15 @@ while i == 0:
 
     
     for new_file in list_file_new :            # copy those new file
-        print(folder_path + new_file)
+        t1 = time.time()
+        size = os.path.getsize(folder_path + str(new_file))
+        total_size.append(size)
+        print(folder_path + new_file + '  size = ' + '{:.2f}'.format(size/10**6)+ ' Mb')
         shu.copy(folder_path + str(new_file) , drive_folder)
+        t2 = time.time()
+        t = t2-t1
+        mbps = size/((t)* 10**6)
+        print('{:.2f}'.format(mbps) + ' Mbps' + '\n')
         
     
     os.chdir(drive_home)
@@ -111,8 +124,15 @@ def copy_dir (path,folder) :
 
     
     for new_file in list_file_new :
-        print(path + str(new_file))
+        t1 = time.time()
+        size = os.path.getsize(path + str(new_file))
+        total_size.append(size)
+        print(path + str(new_file) + ' size = ' + '{:.2f}'.format(size/10**6) + ' Mb')
         shu.copy(path + str(new_file) , drive_folder)
+        t2 = time.time()
+        t = t2-t1
+        mbps = size/(t* 10**6)
+        print('with '+ '{:.2f}'.format(mbps) + ' Mbps' + '\n')
         
         
 i = 0
@@ -125,7 +145,7 @@ while i == 0:
         break
     
     folder = file.at[k, 'with_dir']         # get data from file
-    folder_path = home + str(folder) + '/'   # /home/mehul09 is home folder
+    folder_path = '/home/mehul09/' + str(folder) + '/'   # /home/mehul09 is home folder
     
     try:                 # exception if column value is nan
         list_object = os.listdir(str(folder_path))       
@@ -137,3 +157,11 @@ while i == 0:
     os.chdir(drive_home)
     
     k = k + 1
+    
+    
+total_file = len(total_size)
+size = array(total_size)
+t_size = size.sum()
+
+t_end = time.time()
+print('\nTotal ' + str(total_file) + ' copied on disk \n' + 'Total size  ' + '{:.2f}'.format(t_size/10**6) + ' Mb' + ' \nTotal time ' + '{:.2f}'.format(t_end-t_start)+ ' sec' + '\nAvrage speed ' + '{:.2f}'.format(t_size/((t_end-t_start)*(10**6))) + ' Mbps')
