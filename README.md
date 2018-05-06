@@ -14,3 +14,6 @@ After this
 run this coad on a hard-drive by simply write 'python3 syncer.py' (with administartive permission)
 
 for any help mail me on mehulsutariya09@gmail.com
+
+
+Add extra properties like file size an speed 
