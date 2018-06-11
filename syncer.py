@@ -24,7 +24,7 @@ def copy(path,folder,cp_dir= False) :
         list_dir = list_object
         if len(list_dir) > 0 :
             for dir in list_dir :               # if folder contain folder than chek recursively 
-                copy(str(path) + str(dir) + '/', str(folder) + '/' + str(dir) + '/')
+                copy(str(path) + str(dir) + '/', str(folder) + '/' + str(dir) + '/',cp_dir=True)
         
         
     if not os.path.exists(drive_home + '/' + folder):  # making directory if not present
