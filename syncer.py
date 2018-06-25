@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import time 
 from numpy import array
+from termcolor import colored
 
 
 t_start = time.time()
@@ -52,7 +53,7 @@ def copy(path,folder,cp_dir= False) :
         t1 = time.time()
         size = os.path.getsize(path + str(new_file))
         total_size.append(size)
-        print(path + str(new_file) + ' size = ' + '{:.2f}'.format(size/10**6) + ' Mb \n')
+        print(path + str(new_file) + ' \nsize = ' + '{:.2f}'.format(size/10**6) + ' Mb ')
         shu.copy(path + str(new_file) , drive_folder)
         t2 = time.time()
         t = t2-t1
@@ -61,8 +62,7 @@ def copy(path,folder,cp_dir= False) :
         
         
         
-#file opration        
-os.chdir('/home/mehul09/copy/')     # for cheking purpose only  
+#file opration  
 drive_home = os.getcwd()       # home dir of drive
 
 file = pd.read_csv('shutil.csv')   # read file shutil.csv
@@ -90,7 +90,8 @@ while k<len(file['only_file']) :
     try:                 # exception if column value is nan
         list_object = os.listdir(str(folder_path))       
     except FileNotFoundError:
-        print(str(folder_path)+'is not there ')
+        wrng = colored('"' + str(folder_path)+'" is not there ','red','on_yellow')
+        print('\n' + wrng + '\n')
         k = k + 1
         continue
     
@@ -118,7 +119,8 @@ while k<len(file['with_dir']):
     try:                 # exception if column value is nan
         list_object = os.listdir(str(folder_path))       
     except FileNotFoundError:
-        print(str(folder_path)+' is not there \n\n')
+        wrng = colored('"' + str(folder_path)+'" is not there','red','on_yellow')
+        print('\n' + wrng + '\n')
         k =k + 1
         continue 
     
@@ -134,4 +136,8 @@ size = array(total_size)
 t_size = size.sum()
 
 t_end = time.time()
-print('\nTotal ' + str(total_file) + ' file copied on disk \n' + 'Total size  ' + '{:.2f}'.format(t_size/10**6) + ' Mb' + ' \nTotal time ' + '{:.2f}'.format(t_end-t_start)+ ' sec' + '\nAvrage speed ' + '{:.2f}'.format(t_size/((t_end-t_start)*(10**6))) + ' Mbps')
+FILE = colored('\nTotal ' + str(total_file) + ' file copied on disk \n','green')
+SIZE = colored('Total size  ' + '{:.2f}'.format(t_size/10**6) + ' Mb \n' ,'green')
+TIME = colored('Total time ' + '{:.2f}'.format(t_end-t_start)+ ' sec \n' ,'green')
+SPEED = colored('Avrage speed ' + '{:.2f}'.format(t_size/((t_end-t_start)*(10**6))) + ' Mbps','green')
+print( FILE + SIZE + TIME + SPEED)
