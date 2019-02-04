@@ -3,7 +3,9 @@ import pandas as pd
 import os
 import time 
 from numpy import array
-from termcolor import colored
+from termcolor import *
+import colorama
+colorama.init()
 
 
 t_start = time.time()
@@ -14,7 +16,7 @@ def copy(path,folder,cp_dir= False) :
      
     for object in list_object :
         try :              # to saprate out dir and file 
-            os.chdir(str(path) +'/' + str(object))
+            os.chdir(str(path) +'\\' + str(object))
         except NotADirectoryError :
             list_file.append(object)
             
@@ -25,13 +27,13 @@ def copy(path,folder,cp_dir= False) :
         list_dir = list_object
         if len(list_dir) > 0 :
             for dir in list_dir :               # if folder contain folder than chek recursively 
-                copy(str(path) + str(dir) + '/', str(folder) + '/' + str(dir) + '/',cp_dir=True)
+                copy(str(path) + str(dir) + '\\', str(folder) + '\\' + str(dir) + '\\',cp_dir=True)
         
         
-    if not os.path.exists(drive_home + '/' + folder):  # making directory if not present
-        os.makedirs(drive_home + '/' + folder)
+    if not os.path.exists(drive_home + '\\' + folder):  # making directory if not present
+        os.makedirs(drive_home + '\\' + folder)
         
-    drive_folder = str(drive_home)  + '/' + folder
+    drive_folder = str(drive_home)  + '\\' + folder
     os.chdir(drive_folder)
     
     list_object_drive_folder = os.listdir(str(drive_folder))
@@ -59,9 +61,8 @@ def copy(path,folder,cp_dir= False) :
         t = t2-t1
         mbps = size/(t* 10**6)
         print('with '+ '{:.2f}'.format(mbps) + ' Mbps' + '\n')
-        
-        
-        
+
+
 #file opration  
 drive_home = os.getcwd()       # home dir of drive
 
@@ -70,66 +71,40 @@ file = pd.read_csv('shutil.csv')   # read file shutil.csv
 total_size = []
 
 
-
-# only file copy system
-i = 0
-k = 0
-while k<len(file['only_file']) :
-    try:                 # exception if column value is more than dataframe
-        folder = file.at[k, 'only_file']
-    except KeyError:
-        break
-    
-    folder = file.at[k, 'only_file']         # get data from file
-    folder_path = '/home/mehul09/' + str(folder) + '/'   # /home/mehul09 is home folder
-    
-    if str(folder)=='nan':
-        break
-    
-    
-    try:                 # exception if column value is nan
-        list_object = os.listdir(str(folder_path))       
-    except FileNotFoundError:
-        wrng = colored('"' + str(folder_path)+'" is not there ','red','on_yellow')
-        print('\n' + wrng + '\n')
-        k = k + 1
-        continue
-    
-    copy(folder_path,folder)
-    os.chdir(drive_home)
-    
-    k = k + 1
-
 #copy with directory
 i = 0
 k = 0
 
-while k<len(file['with_dir']):
-    try:                 # exception if column value is more than dataframe
-        folder = file.at[k, 'with_dir']
-    except KeyError:
-        break
+dr = colored('copy started for drive "D"','red')
+print(dr)
+for drive in ['D']:
+    while k<len(file[str(drive)]):
+        try:                 # exception if column value is more than dataframe
+            folder = file.at[k, str(drive)]
+        except KeyError:
+            break
     
-    folder = file.at[k, 'with_dir']         # get data from file
-    folder_path = '/home/mehul09/' + str(folder) + '/'   # /home/mehul09 is home folder
+        folder = file.at[k, str(drive)]         # get data from file
+        folder_path = str(drive) + ":" + str(folder) + "\\"  
+        
+        if str(folder)=='nan':
+            break
     
-    if str(folder)=='nan':
-        break
+        try:                 # exception if column value is nan
+            list_object = os.listdir(str(folder_path))       
+        except FileNotFoundError:
+            wrng = colored('"' + str(folder_path)+'" is not there','red','on_yellow')
+            print('\n' + wrng + '\n')
+            k =k + 1
+            continue 
     
-    try:                 # exception if column value is nan
-        list_object = os.listdir(str(folder_path))       
-    except FileNotFoundError:
-        wrng = colored('"' + str(folder_path)+'" is not there','red','on_yellow')
-        print('\n' + wrng + '\n')
-        k =k + 1
-        continue 
+        copy(folder_path,folder,cp_dir=True)
     
-    copy(folder_path,folder,cp_dir=True)
+        os.chdir(drive_home)
     
-    os.chdir(drive_home)
-    
-    k = k + 1
-    
+        k = k + 1
+
+
     
 total_file = len(total_size)
 size = array(total_size)
@@ -137,7 +112,53 @@ t_size = size.sum()
 
 t_end = time.time()
 FILE = colored('\nTotal ' + str(total_file) + ' file copied on disk \n','green')
-SIZE = colored('Total size  ' + '{:.2f}'.format(t_size/10**6) + ' Mb \n' ,'green')
-TIME = colored('Total time ' + '{:.2f}'.format(t_end-t_start)+ ' sec \n' ,'green')
+SIZE = colored('Total size  ' + '{:.2f}'.format(t_size/10**6) + ' Mb \n','green') 
+TIME = colored('Total time ' + '{:.2f}'.format(t_end-t_start)+ ' sec \n','green')
 SPEED = colored('Avrage speed ' + '{:.2f}'.format(t_size/((t_end-t_start)*(10**6))) + ' Mbps','green')
 print( FILE + SIZE + TIME + SPEED)
+
+i = 0
+k = 0
+
+dr = colored('copy started for drive "E"','red')
+print(dr)
+for drive in ['E']:
+    while k<len(file[str(drive)]):
+        try:                 # exception if column value is more than dataframe
+            folder = file.at[k, str(drive)]
+        except KeyError:
+            break
+    
+        folder = file.at[k, str(drive)]         # get data from file
+        folder_path = str(drive) + ":" + str(folder) + "\\"  
+        
+        if str(folder)=='nan':
+            break
+    
+        try:                 # exception if column value is nan
+            list_object = os.listdir(str(folder_path))       
+        except FileNotFoundError:
+            wrng = colored('"' + str(folder_path)+'" is not there','red','on_yellow')
+            print('\n' + wrng + '\n')
+            k =k + 1
+            continue 
+    
+        copy(folder_path,folder,cp_dir=True)
+    
+        os.chdir(drive_home)
+    
+        k = k + 1
+
+
+    
+total_file = len(total_size)
+size = array(total_size)
+t_size = size.sum()
+
+t_end = time.time()
+FILE = colored('\nTotal ' + str(total_file) + ' file copied on disk \n','green')
+SIZE = colored('Total size  ' + '{:.2f}'.format(t_size/10**6) + ' Mb \n','green') 
+TIME = colored('Total time ' + '{:.2f}'.format(t_end-t_start)+ ' sec \n','green')
+SPEED = colored('Avrage speed ' + '{:.2f}'.format(t_size/((t_end-t_start)*(10**6))) + ' Mbps','green')
+print( FILE + SIZE + TIME + SPEED)
+input()
