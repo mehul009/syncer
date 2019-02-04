@@ -1,19 +1,12 @@
 # syncer
-By this python coad you can take a backup in your hard-drive for your ubuntu
+By this python coad you can take a backup in your hard-drive for your windows
 
 For this you have to feed a data in 'shutil.csv' 
-Here you find two coloums 
-1) only_file  
-2) with_dir
+Here you have to make column with your partiton alphabet(ex: for D drive only write D  or follow the given file)
 
-If you only want to backup filke from those folders than enter data in this column(name like folder/sub_folder  do not wright like /home/user/folder/sub_folder)
-
-And if you want to backeup whole directory with subfolder and it's subfolder recursively than add thosw folders name in this line( you also add folder/sub_folder)
+put backup folders data in those column(name like //folder//sub_folder)
 
 After this 
-run this coad on a hard-drive by simply write 'python3 syncer.py' (with administartive permission)
+run this coad on a hard-drive by double click on it.
 
 for any help mail me on mehulsutariya09@gmail.com
-
-
-Add extra properties like file size an speed 
